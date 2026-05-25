@@ -51,4 +51,8 @@ export default defineNuxtConfig({
     storesDirs: ['./stores/**'],
   },
 
+  tiptap: {
+    prefix: 'Tiptap',
+  },
+
 })
