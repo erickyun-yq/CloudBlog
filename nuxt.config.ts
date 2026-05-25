@@ -1,15 +1,19 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 export default defineNuxtConfig({
+
   modules: [
-    '@nuxt/content',
-    '@nuxt/eslint',
+    '@nuxt/ui',
+    '@nuxt/icon',
     '@nuxt/fonts',
     '@nuxt/image',
-    '@ant-design-vue/nuxt',
-    '@nuxtjs/tailwindcss',
     '@pinia/nuxt',
+    '@nuxt/eslint',
+    '@nuxt/content',
+    'nuxt-tiptap-editor',
   ],
+
   devtools: { enabled: true },
+
   content: {
     // https://content.nuxtjs.org/configuration
   },
@@ -23,10 +27,9 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
     '/old-page': { redirect: '/new-page' }
   },
+
   compatibilityDate: '2026-05-28',
 
-  antd: {
-  },
   eslint: {
     checker: {
       eslintPath: 'eslint',
@@ -35,6 +38,7 @@ export default defineNuxtConfig({
       stylistic: true,
     },
   },
+
   fonts: {
     provider: 'local',
     families: [
@@ -42,7 +46,9 @@ export default defineNuxtConfig({
       { name: 'Alimama AgileVF', global: true, provider: 'local', src: '/fonts/AlimamaAgileVF-Thin.ttf' },
     ],
   },
+
   pinia: {
-    storesDirs: [],
+    storesDirs: ['./stores/**'],
   },
+
 })

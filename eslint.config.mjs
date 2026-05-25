@@ -11,15 +11,13 @@ export default withNuxt(
     rules: {
       // 关闭组件命名规则
       'vue/multi-word-component-names': 'off',
-      // 关闭逗号结尾规则
-      '@stylistic/comma-dangle': 'off',
     },
   })
   .override('nuxt/stylistic', {
     rules: {
-      // 关闭逗号规则
+      // 关闭逗号结尾规则
       '@stylistic/comma-dangle': 'off',
-      // 关闭末尾换行规则（可选）
+      // 关闭末尾换行规则
       '@stylistic/eol-last': 'off',
     },
   })
