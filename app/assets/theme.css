@@ -1,0 +1,46 @@
+/* color chart */
+:root {
+    --fei-hong: #f2cac9;
+    --wu-hua-guo-hong: #efafad;
+    --chen-xi-hong: #ea8958;
+    --gui-hong: #f25a47;
+    --qiu-hai-tang-hong: #ec2b24;
+    --mie-huang:  #f7de98;
+    --lao-huang:  #f6dead;
+    --dan-ke-huang:  #f8c387;
+    --hao-huang: #dfc243;
+    --yuo-cai-hua-huang: #fbda41;
+    --mai-miao-lv: #55bb8a;
+    --zhu-lv: #1ba784;
+    --qing-fan-lv: #2c9678;
+    --lan-lv: #12a182;
+    --hai-wang-lv: #248067;
+    --yun-shan-lan: #2f90b9;
+    --yuan-wei-lan: #158bb8;
+    --jing-tai-lan: #2775b6;
+    --tang-ci-lan: #11659a;
+    --yan-lan: #144a74;
+    --ye-ju-zi: #525288;
+    --zi-zi: #894276;
+    --dou-kou-zi: #ad6598;
+    --qing-hui: #2b333e;
+    --song-yan-mo: #3B3A3E;
+    --yue-wei-hui: #5e616d;
+    --yin-yue-bai: #cdd1d3;
+    --yue-bai: #eef7f2;
+    --xie-bai: #fffef9;
+    --mo-hei: #0F1A20;
+    --xuan-se: #1A1A1A;
+}
+
+/* Light theme */
+[data-theme="light"] {
+  --bg-color: #fff;
+  --text-color: #000;
+}
+
+/* Dark theme */
+[data-theme="dark"] {
+  --bg-color: #000;
+  --text-color: #fff;
+}

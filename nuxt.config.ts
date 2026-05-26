@@ -13,6 +13,7 @@ export default defineNuxtConfig({
   ],
 
   devtools: { enabled: true },
+  css: ['~/assets/main.css'],
 
   content: {
     // https://content.nuxtjs.org/configuration
