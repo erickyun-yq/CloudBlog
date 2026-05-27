@@ -9,7 +9,6 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxt/eslint',
     '@nuxt/content',
-    'nuxt-tiptap-editor',
   ],
 
   devtools: { enabled: true },
@@ -28,7 +27,6 @@ export default defineNuxtConfig({
     '/api/**': { cors: true },
     '/old-page': { redirect: '/new-page' }
   },
-
   compatibilityDate: '2026-05-28',
 
   eslint: {
@@ -50,10 +48,6 @@ export default defineNuxtConfig({
 
   pinia: {
     storesDirs: ['./stores/**'],
-  },
-
-  tiptap: {
-    prefix: 'Tiptap',
   },
 
 })

@@ -1,7 +1,8 @@
-/* @import '@/assets/css/theme.css'; */
-
-
+@source "../../../content/**/*";
+@import '@/assets/theme.css';
+@import "tailwindcss";
+@import "@nuxt/ui";
 
 body {
-  font-family: 'Alimama DongFangDaKai', 'Alimama AgileVF', sans-serif;
+    font-family: 'Alimama DongFangDaKai', sans-serif;
 }

@@ -2,5 +2,5 @@
 
 [Back home](/)
 
-::tiptapEditor
+::myEditor
 
