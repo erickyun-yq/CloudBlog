@@ -2,6 +2,7 @@
   <NuxtRouteAnnouncer />
   <UApp>
     <NuxtPage />
+    <UColorModeSelect />
   </UApp>
 </template>
 
