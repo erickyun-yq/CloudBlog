@@ -8,134 +8,211 @@ You can apply **bold**, *italic*, <u>underline</u>, ~~strikethrough~~, and \`inl
 `)
 
 const items: EditorToolbarItem[][] = [
-  // History controls
   [{
     kind: 'undo',
-    icon: 'i-lucide-undo',
-    tooltip: { text: 'Undo' }
+    icon: 'mdi:undo',
+    size: 'xl',
+    tooltip: { text: '撤销' }
   }, {
     kind: 'redo',
-    icon: 'i-lucide-redo',
-    tooltip: { text: 'Redo' }
-  }],
-  // Block types
-  [{
-    icon: 'i-lucide-heading',
-    tooltip: { text: 'Headings' },
+    icon: 'mdi:redo',
+    size: 'xl',
+    tooltip: { text: '重做' }
+  }, {
+    icon: 'lucide:ellipsis-vertical',
+    size: 'xl',
+    disabled: true,
+    class: 'cursor-default! px-0',
+  }, {
+    icon: 'oui:editor-heading',
+    size: 'xl',
+    tooltip: { text: '格式' },
     content: {
       align: 'start'
     },
     items: [{
+      kind: 'paragraph',
+      icon: 'icon-park-solid:paragraph-round',
+      size: 'lg',
+      label: '正文'
+    }, {
       kind: 'heading',
       level: 1,
       icon: 'i-lucide-heading-1',
-      label: 'Heading 1'
+      size: 'lg',
+      label: '标题 h1'
     }, {
       kind: 'heading',
       level: 2,
       icon: 'i-lucide-heading-2',
-      label: 'Heading 2'
+      size: 'lg',
+      label: '标题 h2'
     }, {
       kind: 'heading',
       level: 3,
       icon: 'i-lucide-heading-3',
-      label: 'Heading 3'
+      size: 'lg',
+      label: '标题 h3'
     }, {
       kind: 'heading',
       level: 4,
       icon: 'i-lucide-heading-4',
-      label: 'Heading 4'
+      size: 'lg',
+      label: '标题 h4'
+    }]
+  }, {
+    kind: 'mark',
+    mark: 'bold',
+    icon: 'ls:bold',
+    size: 'sm',
+    class: 'p-3',
+    tooltip: { text: '加粗' }
+  }, {
+    kind: 'highlight',
+    icon: 'material-symbols:ink-highlighter-rounded',
+    size: 'xl',
+    tooltip: { text: '高亮' }
+  }, {
+    icon: 'lucide:ellipsis',
+    size: 'xl',
+    tooltip: { text: '其他' },
+    content: {
+      align: 'start'
+    },
+    items: [{
+      kind: 'mark',
+      mark: 'italic',
+      icon: 'mingcute:italic-fill',
+      size: 'lg',
+      label: '斜体'
+    }, {
+      kind: 'mark',
+      mark: 'underline',
+      icon: 'mdi:format-underline',
+      size: 'lg',
+      label: '下划线'
+    }, {
+      kind: 'mark',
+      mark: 'strike',
+      icon: 'fa7-solid:strikethrough',
+      size: 'lg',
+      label: '删除线'
+    }]
+  }, {
+    icon: 'lucide:ellipsis-vertical',
+    size: 'xl',
+    disabled: true,
+    class: 'cursor-default! px-0',
+  }, {
+    icon: 'i-lucide-align-justify',
+    size: 'xl',
+    tooltip: { text: '文本对齐' },
+    content: {
+      align: 'start'
+    },
+    items: [{
+      kind: 'textAlign',
+      align: 'left',
+      icon: 'lucide:align-left',
+      size: 'md',
+      label: '左对齐'
+    }, {
+      kind: 'textAlign',
+      align: 'center',
+      icon: 'lucide:align-center',
+      size: 'md',
+      label: '居中对齐'
+    }, {
+      kind: 'textAlign',
+      align: 'right',
+      icon: 'lucide:align-right',
+      size: 'md',
+      label: '右对齐'
+    }, {
+      kind: 'textAlign',
+      align: 'justify',
+      icon: 'lucide:align-justify',
+      size: 'md',
+      label: '两端对齐'
     }]
   }, {
     icon: 'i-lucide-list',
-    tooltip: { text: 'Lists' },
+    size: 'xl',
+    tooltip: { text: '列表' },
     content: {
       align: 'start'
     },
     items: [{
       kind: 'bulletList',
-      icon: 'i-lucide-list',
-      label: 'Bullet List'
+      icon: 'mdi:format-list-bulleted',
+      size: 'lg',
+      label: '无序列表'
     }, {
       kind: 'orderedList',
-      icon: 'i-lucide-list-ordered',
-      label: 'Ordered List'
-    }]
+      icon: 'lucide:list-ordered',
+      size: 'lg',
+      label: '有序列表'
+    },]
   }, {
     kind: 'blockquote',
     icon: 'i-lucide-text-quote',
-    tooltip: { text: 'Blockquote' }
-  }, {
-    kind: 'codeBlock',
-    icon: 'i-lucide-square-code',
-    tooltip: { text: 'Code Block' }
+    size: 'xl',
+    tooltip: { text: '块引用' }
   }, {
     kind: 'horizontalRule',
     icon: 'i-lucide-separator-horizontal',
-    tooltip: { text: 'Horizontal Rule' }
-  }],
-  // Text formatting
-  [{
-    kind: 'mark',
-    mark: 'bold',
-    icon: 'i-lucide-bold',
-    tooltip: { text: 'Bold' }
+    size: 'xl',
+    tooltip: { text: '水平线' }
   }, {
-    kind: 'mark',
-    mark: 'italic',
-    icon: 'i-lucide-italic',
-    tooltip: { text: 'Italic' }
-  }, {
-    kind: 'mark',
-    mark: 'underline',
-    icon: 'i-lucide-underline',
-    tooltip: { text: 'Underline' }
-  }, {
-    kind: 'mark',
-    mark: 'strike',
-    icon: 'i-lucide-strikethrough',
-    tooltip: { text: 'Strikethrough' }
-  }, {
-    kind: 'mark',
-    mark: 'code',
-    icon: 'i-lucide-code',
-    tooltip: { text: 'Code' }
-  }],
-  // Link
-  [{
-    kind: 'link',
-    icon: 'i-lucide-link',
-    tooltip: { text: 'Link' }
-  }],
-  // Text alignment
-  [{
-    icon: 'i-lucide-align-justify',
-    tooltip: { text: 'Text Align' },
+    icon: 'tabler:code',
+    size: 'xl',
+    tooltip: { text: '代码' },
     content: {
-      align: 'end'
+      align: 'start'
     },
     items: [{
-      kind: 'textAlign',
-      align: 'left',
-      icon: 'i-lucide-align-left',
-      label: 'Align Left'
+      kind: 'mark',
+      mark: 'code',
+      icon: 'i-lucide-code',
+      size: 'lg',
+      label: '行内代码'
     }, {
-      kind: 'textAlign',
-      align: 'center',
-      icon: 'i-lucide-align-center',
-      label: 'Align Center'
-    }, {
-      kind: 'textAlign',
-      align: 'right',
-      icon: 'i-lucide-align-right',
-      label: 'Align Right'
-    }, {
-      kind: 'textAlign',
-      align: 'justify',
-      icon: 'i-lucide-align-justify',
-      label: 'Align Justify'
+      kind: 'codeBlock',
+      icon: 'i-lucide-square-code',
+      size: 'lg',
+      label: '代码块'
     }]
-  }]
+  }, {
+    kind: 'table',
+    icon: 'i-lucide-table',
+    size: 'xl',
+    tooltip: { text: '表格' }
+  }, {
+    icon: 'lucide:ellipsis-vertical',
+    size: 'xl',
+    disabled: true,
+    class: 'cursor-default! px-0',
+  }, {
+    kind: 'image',
+    icon: 'lets-icons:img-load-box-fill',
+    size: 'xl',
+    tooltip: { text: '图片' }
+  }, {
+    kind: 'video',
+    icon: 'hugeicons:video-ai',
+    size: 'xl',
+    tooltip: { text: '视频' }
+  }, {
+    // kind: 'file',
+    icon: 'mingcute:formula-fill',
+    size: 'xl',
+    tooltip: { text: '公式' }
+  }, {
+    kind: 'link',
+    icon: 'fa7-solid:link',
+    size: 'xl',
+    tooltip: { text: '链接' }
+  }],
 ]
 </script>
 
@@ -145,12 +222,15 @@ const items: EditorToolbarItem[][] = [
     v-model="value"
     content-type="markdown"
     :extensions="[TextAlign.configure({ types: ['heading', 'paragraph'] })]"
-    class="w-full min-h-37 flex flex-col gap-4"
+    class="w-full min-h-dvh flex flex-col gap-4 rounded-lg z-100"
   >
     <UEditorToolbar
       :editor="editor"
       :items="items"
-      class="sm:px-8 overflow-x-auto"
+      placeholder="Type / for commands..."
+      class="w-full overflow-x-auto z-200 justify-center lg:flex hidden"
+      layout="fixed"
     />
+    <UEditorDragHandle :editor="editor" />
   </UEditor>
 </template>

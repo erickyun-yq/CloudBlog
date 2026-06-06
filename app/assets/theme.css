@@ -279,8 +279,13 @@
 
 .dark {
     --ui-bg: var(--color-neutral-900);
-    --ui-bg-muted: var(--color-stone-800);
-    --ui-bg-elevated: var(--color-stone-400);
-    --ui-bg-accented: var(--color-stone-600);
+    --ui-bg-muted: var(--color-zinc-900);
+    --ui-bg-elevated: var(--color-zinc-900);
+    --ui-bg-accented: var(--color-zinc-900);
     --ui-bg-inverted: #fff;
+
+    --ui-border: var(--color-stone-700);
+    --ui-border-muted: var(--color-neutral-700);
+    --ui-border-accented: var(--ui-color-neutral-300);
+    --ui-border-inverted: var(--ui-color-neutral-900);
 }
