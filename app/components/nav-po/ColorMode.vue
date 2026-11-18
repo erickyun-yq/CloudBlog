@@ -28,7 +28,7 @@ onMounted(() => store.init())
         color="neutral"
         size="xl"
         variant="ghost"
-        @click="toggleTheme"
+        @click.passive="toggleTheme"
     >
         <template #leading>
             <span v-auto-animate="{ duration: 600, easing: 'ease-in-out' }" class="inline-flex">
