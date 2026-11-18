@@ -1,0 +1,41 @@
+::view-transition-old(root) {
+  animation: var(--theme-transition-old-animation, none);
+  z-index: var(--theme-transition-old-z, 1);
+}
+
+::view-transition-new(root) {
+  animation: var(--theme-transition-new-animation, none);
+  z-index: var(--theme-transition-new-z, 2);
+}
+
+@keyframes theme-reveal {
+  from {
+    clip-path: circle(0 at var(--theme-transition-x, 50vw) var(--theme-transition-y, 50vh));
+  }
+  to {
+    clip-path: circle(150vmax at var(--theme-transition-x, 50vw) var(--theme-transition-y, 50vh));
+  }
+}
+
+@keyframes theme-contract {
+  from {
+    clip-path: circle(150vmax at var(--theme-transition-x, 50vw) var(--theme-transition-y, 50vh));
+  }
+  to {
+    clip-path: circle(0 at var(--theme-transition-x, 50vw) var(--theme-transition-y, 50vh));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation-duration: 1ms !important;
+  }
+}
+
+@layer base {
+  button:not(:disabled),
+  [role="button"]:not(:disabled) {
+    cursor: pointer;
+  }
+}

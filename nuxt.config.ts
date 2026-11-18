@@ -2,20 +2,35 @@
 export default defineNuxtConfig({
 
   modules: [
-    '@nuxt/ui',
-    '@nuxt/icon',
-    '@nuxt/fonts',
-    '@nuxt/image',
-    '@pinia/nuxt',
-    '@nuxt/eslint',
-    '@nuxt/content',
+    '@formkit/auto-animate/nuxt',
+    '@nuxt/ui', '@nuxt/content',
+    '@nuxt/icon', '@nuxt/fonts', 
+    '@nuxt/image', '@nuxt/eslint',
+    '@tresjs/nuxt', '@pinia/nuxt',
+    '@nuxtjs/i18n',
   ],
 
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
-
+  ui: {
+    colorMode: false
+  },
+  
   content: {
     // https://content.nuxtjs.org/configuration
+  },
+
+  i18n: {
+    detectBrowserLanguage:{
+      useCookie: true,
+      cookieKey: 'i18n_blog_language',
+      redirectOn: 'root',
+    },
+    locales: [
+      { code: 'zh', language: 'zh-CN', name: '简体中文', file: "zh.json"},
+      { code: 'en', language: 'en-US', name: 'English', file: "en.json"}
+    ],
+    defaultLocale: 'zn',
   },
 
   routeRules: {
