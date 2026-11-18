@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   modules: [
     '@formkit/auto-animate/nuxt',
     '@nuxt/ui', '@nuxt/content',
-    '@nuxt/icon', '@nuxt/fonts', 
+    '@nuxt/icon', '@nuxt/fonts',
     '@nuxt/image', '@nuxt/eslint',
     '@tresjs/nuxt', '@pinia/nuxt',
     '@nuxtjs/i18n',
@@ -12,25 +12,12 @@ export default defineNuxtConfig({
 
   devtools: { enabled: true },
   css: ['~/assets/main.css'],
-  ui: {
-    colorMode: false
-  },
-  
+
   content: {
     // https://content.nuxtjs.org/configuration
   },
-
-  i18n: {
-    detectBrowserLanguage:{
-      useCookie: true,
-      cookieKey: 'i18n_blog_language',
-      redirectOn: 'root',
-    },
-    locales: [
-      { code: 'zh', language: 'zh-CN', name: '简体中文', file: "zh.json"},
-      { code: 'en', language: 'en-US', name: 'English', file: "en.json"}
-    ],
-    defaultLocale: 'zn',
+  ui: {
+    colorMode: false
   },
 
   routeRules: {
@@ -59,6 +46,18 @@ export default defineNuxtConfig({
       { name: 'Alimama DongFangDaKai', global: true, provider: 'local', src: '/fonts/AlimamaDongFangDaKai-Regular.ttf' },
       { name: 'Alimama AgileVF', global: true, provider: 'local', src: '/fonts/AlimamaAgileVF-Thin.ttf' },
     ],
+  },
+
+  i18n: {
+    strategy: 'prefix_except_default',
+    detectBrowserLanguage: {
+      useCookie: false,
+    },
+    locales: [
+      { code: 'zh', language: 'zh-CN', name: '简体中文', file: 'zh.json' },
+      { code: 'en', language: 'en-US', name: 'English', file: 'en.json' }
+    ],
+    defaultLocale: 'zh',
   },
 
   pinia: {

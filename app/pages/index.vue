@@ -4,5 +4,5 @@
 
 <template>
   <!-- <MyEditor /> -->
-  <NavigationBar/>
+  <NavigationBar />
 </template>

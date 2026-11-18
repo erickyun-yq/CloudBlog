@@ -1,14 +1,13 @@
 import { defineStore } from 'pinia'
 
-export const useThemeStore = defineStore('theme',  {
+export const useThemeStore = defineStore('theme', {
   state: () => ({
     theme: 'light',
     expire: Date.now() + 3 * 24 * 60 * 60 * 1000,
-  }),                                                                      
+  }),
   actions: {
     init() {
       if (typeof window === 'undefined') return
-      localStorage.removeItem("nuxt-color-mode")
       const lsg = localStorage.getItem('blog-theme')
       if (lsg) {
         const savedTheme = JSON.parse(lsg)
@@ -33,7 +32,7 @@ export const useThemeStore = defineStore('theme',  {
       this.set()
     },
 
-    toggle(origin?: { x: number; y: number }) {
+    toggle(origin?: { x: number, y: number }) {
       const nextTheme = this.theme === 'light' ? 'dark' : 'light'
       const applyTheme = () => {
         this.theme = nextTheme
@@ -50,8 +49,8 @@ export const useThemeStore = defineStore('theme',  {
       }
 
       if (
-        window.matchMedia('(prefers-reduced-motion: reduce)').matches ||
-        !transitionDocument.startViewTransition
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches
+        || !transitionDocument.startViewTransition
       ) {
         applyTheme()
         return

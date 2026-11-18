@@ -4,8 +4,22 @@
 @import "tailwindcss";
 @import "@nuxt/ui";
 
+@font-face {
+    font-family: 'Alimama Mixed';
+    src: url('/fonts/AlimamaDongFangDaKai-Regular.ttf') format('truetype');
+    font-style: normal;
+    unicode-range: U+2E80-2EFF, U+3000-303F, U+31C0-31EF, U+3400-4DBF, U+4E00-9FFF, U+F900-FAFF, U+FF00-FFEF, U+20000-2A6DF;
+}
+
+@font-face {
+    font-family: 'Alimama Mixed';
+    src: url('/fonts/AlimamaAgileVF-Thin.ttf') format('truetype');
+    font-style: normal;
+    unicode-range: U+0000-024F, U+1E00-1EFF, U+2000-206F, U+20A0-20CF, U+2100-214F;
+}
+
 body {
-    font-family: 'Alimama DongFangDaKai', sans-serif;
+    font-family: 'Alimama Mixed', sans-serif, serif, monospace, cursive;
 }
 
 
