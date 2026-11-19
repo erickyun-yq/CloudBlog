@@ -96,7 +96,7 @@ onUnmounted(() => {
     />
     <span v-else class="grid w-full min-w-0 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden">
       <span class="col-start-1 row-start-1 min-w-0 max-w-full overflow-hidden whitespace-nowrap text-center leading-none transition-opacity duration-300 ease-in-out group-hover:opacity-0">
-        {{ isAtNinetyPercent ? '返回顶部' : `${percentScroll}` }}
+        {{ isAtNinetyPercent ?  $t('backTop') : `${percentScroll}` }}
       </span>
       <UIcon
         name="lets-icons:arrow-top"
