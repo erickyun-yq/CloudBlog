@@ -8,7 +8,10 @@ import Translation from './nav-po/Translation.vue'
 <template>
   <ColorMode />
   <Translation />
-  <TopBack :show-top="false" :container="isolate" class="relative! top-120"/>
+  <TopBack
+    :show-top="false"
+    class="relative! top-120"
+  />
   <h1>{{ $t('homePage') }}</h1>
 
   <!-- <FuzzyText /> -->
