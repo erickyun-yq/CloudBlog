@@ -12,6 +12,7 @@ const localeOptions = [
     value: 'en',
   },
 ] as const
+
 const items = computed<DropdownMenuItem[]>(() =>
   localeOptions.map(({ label, value }) => {
     const selected = locale.value === value
@@ -19,9 +20,7 @@ const items = computed<DropdownMenuItem[]>(() =>
     return {
       label,
       icon: selected ? 'cuida:single-select-outline' : 'lsicon:radio-unselected-filled',
-      class: selected
-        ? 'bg-sky-100 dark:bg-sky-900/40 text-sky-700 dark:text-sky-300'
-        : undefined,
+      class: selected ? 'bg-(--ui-nav-bg)' : undefined,
       ui: {
         itemLabel: selected ? 'font-semibold' : '',
       },
@@ -37,19 +36,16 @@ const items = computed<DropdownMenuItem[]>(() =>
     :items="items"
     :content="{ align: 'center', side: 'bottom', sideOffset: 8 }"
     :ui="{ content: 'w-28 min-w-0',
-           item: 'items-center hover:bg-amber-300 rounded-[.4rem]',
-           itemLeadingIcon: 'size-2 shrink-0 text-sky-500!',
-           itemLabel: 'whitespace-nowrap text-sm leading-4 w-20 text-start',
-    }"
+           item: 'items-center hover:bg-(--ui-nav-bg) rounded-[.4rem] mb-0.5 mt-0.2',
+           itemLeadingIcon: 'size-2 shrink-0 text-neutral-400!',
+           itemLabel: 'whitespace-nowrap text-sm leading-4 w-20 text-start' }"
   >
     <UButton
-      class="hover:bg-sky-100 dark:hover:bg-neutral-800 active:bg-auto rounded-full ring-0 p-1.5"
+      class="hover:bg-(--ui-nav-bg) active:bg-auto rounded-full ring-0 p-1.5"
       icon="hugeicons:translation"
       color="neutral"
       variant="outline"
       size="xl"
     />
   </UDropdownMenu>
-
-  <h1>{{ $t('homePage') }}</h1>
 </template>

@@ -6,7 +6,7 @@ import Translation from './nav-po/Translation.vue'
 <template>
   <ColorMode />
   <Translation />
+    <h1>{{ $t('homePage') }}</h1>
+
 </template>
 
-<script setup>
-</script>
