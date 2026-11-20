@@ -9,7 +9,7 @@ import Translation from './nav-po/Translation.vue'
   <ColorMode />
   <Translation />
   <TopBack
-    :show-top="false"
+    :show-top="true"
     class="relative! top-120"
   />
   <h1>{{ $t('homePage') }}</h1>
