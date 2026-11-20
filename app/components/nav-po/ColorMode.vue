@@ -1,6 +1,11 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useId } from 'vue'
+import { computed, onMounted, ref, useId, defineProps } from 'vue'
 import { useThemeStore } from '~/stores/ThemeStore'
+const styleEnt = withDefaults(defineProps<{
+   buttonStyle: string,
+}>(), { 
+   buttonStyle: 'hover:bg-(--ui-nav-bg)' 
+})
 
 const store = useThemeStore()
 const darkRotationActive = ref(false)
@@ -34,7 +39,8 @@ onMounted(() => store.init())
 <template>
   <UButton
     aria-label="Toggle color theme"
-    class="hover:bg-(--ui-nav-bg) active:bg-auto rounded-full p-1.5 ring-0"
+    class="active:bg-auto rounded-full! p-1.5! ring-0!"
+    :class="styleEnt.buttonStyle"
     color="neutral"
     size="xl"
     variant="ghost"
@@ -61,14 +67,14 @@ onMounted(() => store.init())
                   class="moon-cutout"
                   cx="18"
                   cy="7"
-                  r="9"
+                  r="8"
                   fill="black"
                 />
               </mask>
             </defs>
             <circle
-              cx="12"
-              cy="12"
+              cx="11"
+              cy="11"
               r="9"
               fill="currentColor"
               :mask="`url(#${moonMaskId})`"
@@ -90,7 +96,7 @@ onMounted(() => store.init())
 .dark-icon-enter-active {
   transform-box: fill-box;
   transform-origin: center;
-  animation: dark-icon-rotate-return 1.2s ease-in-out both;
+  animation: dark-icon-rotate-return 1.4s ease-in-out both;
 }
 
 .moon-icon-enter-active .moon-cutout {
@@ -104,7 +110,7 @@ onMounted(() => store.init())
     transform: rotate(0deg);
   }
   60% {
-    transform: rotate(80deg);
+    transform: rotate(-80deg);
   }
   100% {
     transform: rotate(0deg);
