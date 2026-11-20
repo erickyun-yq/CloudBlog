@@ -57,7 +57,9 @@ export const useThemeStore = defineStore('theme', {
       }
 
       const root = document.documentElement
-      const duration = '1600ms cubic-bezier(0.2, 0.8, 0.2, 1) both'
+      const duration = nextTheme === 'dark'
+        ? '1200ms cubic-bezier(0.4, 0, 0.2, 1) both'
+        : '1000ms cubic-bezier(0.4, 0, 0.2, 1) both'
       root.style.setProperty('--theme-transition-x', `${origin?.x ?? window.innerWidth / 2}px`)
       root.style.setProperty('--theme-transition-y', `${origin?.y ?? window.innerHeight / 2}px`)
       root.style.setProperty(

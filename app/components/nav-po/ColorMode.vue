@@ -1,22 +1,20 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref } from 'vue'
+import { computed, onMounted, ref, useId } from 'vue'
 import { useThemeStore } from '~/stores/ThemeStore'
 
 const store = useThemeStore()
-const iconAnimationActive = ref(false)
-let iconAnimationTimeout: ReturnType<typeof setTimeout> | undefined
+const darkRotationActive = ref(false)
+const moonMaskId = `color-mode-moon-${useId()}`
 
-const startIconAnimation = () => {
-  iconAnimationActive.value = true
-  if (iconAnimationTimeout) clearTimeout(iconAnimationTimeout)
-  iconAnimationTimeout = setTimeout(() => {
-    iconAnimationActive.value = false
-    iconAnimationTimeout = undefined
-  }, 2000)
-}
+const iconTransitionDuration = computed(() => {
+  if (typeof window !== 'undefined' && window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    return 1
+  }
+  return darkRotationActive.value ? 1200 : 1000
+})
 
 const toggleTheme = (event: MouseEvent) => {
-  startIconAnimation()
+  darkRotationActive.value = store.theme === 'light'
   const button = event.currentTarget
   if (!(button instanceof HTMLElement)) {
     store.toggle()
@@ -31,9 +29,6 @@ const toggleTheme = (event: MouseEvent) => {
 }
 
 onMounted(() => store.init())
-onBeforeUnmount(() => {
-  if (iconAnimationTimeout) clearTimeout(iconAnimationTimeout)
-})
 </script>
 
 <template>
@@ -46,41 +41,89 @@ onBeforeUnmount(() => {
     @click="toggleTheme"
   >
     <template #leading>
-      <span
-        v-auto-animate="{ duration: 600, easing: 'ease-in-out' }"
-        class="inline-flex"
-      >
-        <UIcon
-          :key="store.theme"
-          :name="store.theme === 'dark'
-            ? 'line-md:sunny-filled-loop-to-moon-filled-loop-transition'
-            : 'line-md:moon-filled-alt-to-sunny-filled-loop-transition'"
-          :class="{ 'theme-icon-switch': iconAnimationActive }"
-          class="h-6 w-6"
-        />
+      <span class="inline-flex">
+        <Transition
+          mode="out-in"
+          :duration="{ enter: iconTransitionDuration, leave: 0 }"
+          :enter-active-class="darkRotationActive ? 'dark-icon-enter-active' : 'moon-icon-enter-active'"
+        >
+          <svg
+            v-if="store.theme === 'light'"
+            key="light"
+            viewBox="0 0 22 22"
+            class="h-5.5 w-5.5"
+            aria-hidden="true"
+          >
+            <defs>
+              <mask :id="moonMaskId" maskUnits="userSpaceOnUse">
+                <rect width="22" height="22" fill="white" />
+                <circle
+                  class="moon-cutout"
+                  cx="18"
+                  cy="7"
+                  r="9"
+                  fill="black"
+                />
+              </mask>
+            </defs>
+            <circle
+              cx="12"
+              cy="12"
+              r="9"
+              fill="currentColor"
+              :mask="`url(#${moonMaskId})`"
+            />
+          </svg>
+          <UIcon
+            v-else
+            key="dark"
+            name="line-md:moon-filled-to-sunny-filled-transition"
+            class="h-5.5 w-5.5"
+          />
+        </Transition>
       </span>
     </template>
   </UButton>
 </template>
 
 <style scoped>
-.theme-icon-switch {
+.dark-icon-enter-active {
+  transform-box: fill-box;
   transform-origin: center;
-  animation: theme-icon-switch 2s ease-in-out both;
+  animation: dark-icon-rotate-return 1.2s ease-in-out both;
 }
 
-@keyframes theme-icon-switch {
+.moon-icon-enter-active .moon-cutout {
+  transform-box: fill-box;
+  transform-origin: center;
+  animation: moon-cutout-roll 1s ease-in-out both;
+}
+
+@keyframes dark-icon-rotate-return {
   0% {
+    transform: rotate(0deg);
+  }
+  60% {
     transform: rotate(80deg);
   }
   100% {
-    transform: rotate(0);
+    transform: rotate(0deg);
+  }
+}
+
+@keyframes moon-cutout-roll {
+  from {
+    transform: translate(12px, 10px) scale(0.82);
+  }
+  to {
+    transform: translate(0, 0) scale(1);
   }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .theme-icon-switch {
-    animation-duration: .8s;
+  .dark-icon-enter-active,
+  .moon-icon-enter-active .moon-cutout {
+    animation-duration: 0.01ms;
   }
 }
 </style>
