@@ -82,7 +82,7 @@ onUnmounted(() => {
 <template>
   <UButton
     v-if="isVisible"
-    class="group bg-(--ui-nav-bg) rounded-full h-9! min-w-9 px-0! py-0! transition-[width,translate] duration-1000 ease-out"
+    class="group bg-(--ui-nav-bg)/70 backdrop-blur-md inset-shadow-sm rounded-full h-9! min-w-9 px-0! py-0! transition-[width,translate] duration-1000 ease-out"
     :class="showTop || !isAtNinetyPercent
       ? 'w-9 justify-center'
       : 'w-22 justify-center -translate-x-13'"
@@ -90,20 +90,20 @@ onUnmounted(() => {
   >
     <UIcon
       v-if="showTop"
-      name="lets-icons:arrow-top"
-      class="size-6 shrink-0"
+      name="boxicons:arrow-to-top-stroke-filled"
+      class="-mb-0.75 size-6 shrink-0"
       aria-hidden="true"
     />
     <span
       v-else
       class="grid w-full min-w-0 grid-cols-[minmax(0,1fr)] place-items-center overflow-hidden"
     >
-      <span class="col-start-1 -mb-0.75 row-start-1 min-w-0 max-w-full overflow-hidden whitespace-nowrap text-center leading-none transition-opacity duration-300 ease-in-out group-hover:opacity-0">
+      <span class="col-start-1 text-default -mb-0.75 row-start-1 min-w-0 max-w-full overflow-hidden whitespace-nowrap text-center leading-none transition-opacity duration-300 ease-in-out group-hover:opacity-0">
         {{ isAtNinetyPercent ? $t('backTop') : `${percentScroll}` }}
       </span>
       <UIcon
-        name="lets-icons:arrow-top"
-        class="col-start-1 row-start-1 size-6 shrink-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+        name="boxicons:arrow-to-top-stroke-filled"
+        class="-mb-0.75 col-start-1 row-start-1 size-6 shrink-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
         aria-hidden="true"
       />
     </span>
