@@ -31,6 +31,15 @@ export default defineNuxtConfig({
   },
   compatibilityDate: '2026-05-28',
 
+  vite: {
+    optimizeDeps: {
+      include: [
+        '@tiptap/extension-text-align',
+        'three',
+      ]
+    }
+  },
+
   eslint: {
     checker: {
       eslintPath: 'eslint',

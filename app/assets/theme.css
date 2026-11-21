@@ -300,6 +300,9 @@
     --ui-nav-bg: var(--color-sky-100);
     --ui-nav-cpt-bg: var(--color-sky-200);
     --ui-nav-fyi-bg: var(--color-sky-300);
+
+
+    --ui-top-back: var(--color-neutral-900);
 }
 
 .dark {
@@ -324,4 +327,6 @@
     --ui-nav-bg: var(--color-neutral-800);
     --ui-nav-cpt-bg: var(--color-neutral-700);
     --ui-nav-fyi-bg: var(--color-neutral-600);
+
+    --ui-top-back: var(--color-neutral-800);
 }
