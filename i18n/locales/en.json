@@ -4,5 +4,7 @@
     "categories": "Categories",
     "tags": "Tags",
     "search": "Search",
-    "backTop": "BackTop"
+    "backTop": "BackTop",
+    "theme": "Theme",
+    "language": "Language Toggle"
 }

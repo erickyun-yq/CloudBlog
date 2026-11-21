@@ -2,7 +2,7 @@
 import { onMounted, onUnmounted, watch, nextTick, useTemplateRef } from 'vue'
 
 interface FuzzyTextProps {
-  text: string
+  text?: string
   fontSize?: number | string
   fontWeight?: string | number
   fontFamily?: string
