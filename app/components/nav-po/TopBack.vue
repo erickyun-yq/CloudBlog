@@ -145,7 +145,7 @@ onUnmounted(() => {
     <UIcon
       v-if="showTop"
       name="boxicons:arrow-to-top-stroke-filled"
-      class="-mb-0.75 size-6 shrink-0"
+      class="-mb-0.75 size-6 shrink-0 text-highlighted"
       aria-hidden="true"
     />
     <span
@@ -157,7 +157,7 @@ onUnmounted(() => {
       </span>
       <UIcon
         name="boxicons:arrow-to-top-stroke-filled"
-        class="-mb-0.75 col-start-1 row-start-1 size-5.5 shrink-0 opacity-0 transition-opacity duration-300 ease-in-out group-hover:opacity-100"
+        class="-mb-0.75 col-start-1 row-start-1 size-5.5 shrink-0 opacity-0 text-highlighted transition-opacity duration-300 ease-in-out group-hover:opacity-100"
         aria-hidden="true"
       />
     </span>
