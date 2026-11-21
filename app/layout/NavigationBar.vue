@@ -1,8 +1,8 @@
 <script setup>
-import FuzzyText from './error/FuzzyText.vue'
-import TopBack from './nav-po/TopBack.vue'
-import Language from './nav-po/Language.vue'
-import Theme from './nav-po/Theme.vue'
+import FuzzyText from '../components/error/FuzzyText.vue'
+import TopBack from '../components/nav-po/TopBack.vue'
+import Language from '../components/nav-po/Language.vue'
+import Theme from '../components/nav-po/Theme.vue'
 </script>
 
 <template class="sticky z-200">
