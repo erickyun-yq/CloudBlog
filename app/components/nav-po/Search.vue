@@ -1,6 +1,13 @@
 <script setup lang="ts">
+import { computed, ref, defineProps } from 'vue'
+
 const searchOpen = ref(false)
 const searchTerm = ref('')
+const isWide = ref(true)
+const onResize = (e: MediaQueryListEvent) => {
+  isWide.value = e.matches
+}
+let mql: MediaQueryList
 
 const { data: users, status, execute } = await useLazyFetch('https://jsonplaceholder.typicode.com/users', {
   key: 'modal-command-palette-users',
@@ -38,6 +45,13 @@ defineShortcuts({
     }
   }
 })
+
+onMounted(() => {
+  mql = window.matchMedia('(min-width: 768px)')
+  isWide.value = mql.matches
+  mql.addEventListener('change', onResize)
+  onBeforeUnmount(() => mql.removeEventListener('change', onResize))
+})
 </script>
 
 <template>
@@ -46,19 +60,29 @@ defineShortcuts({
     @update:open="onOpen"
   >
     <UButton
-      class="h-8.5 justify-center items-center rounded-full px-2 py-1.5 absolute top-0"
+      class="inline-flex justify-center h-8.5 min-w-8.5 rounded-full md:px-2 px-1.5 py-1.5 ring-0 bg-transparent! md:text-stone-500 text-highlighted hover:text-highlighted"
+      :class="'!md:bg-accented!'"
       color="neutral"
       variant="subtle"
     >
-      <UIcon
-        name="hugeicons:search-01"
-        class="h-4.5 w-4.5 shrink-0"
-      />
-      <span class="flex-1 text-left text-xs px-1 mt-px">
-        {{ $t('search') }}
-      </span>
-      <span class="rounded-r-xl rounded-l-md mt-px border-2 border-neutral-300/20 bg-neutral-500/10 px-1.5 py-0.5 text-xs leading-4 text-neutral-400 dark:border-neutral-700 dark:bg-mauve-800">
-        Ctrl K
+      <span
+        v-auto-animate
+        class="flex items-center gap-1"
+      >
+        <UIcon
+          name="hugeicons:search-01"
+          class="h-5.5 w-5.5 md:h-4.5 md:w-4.5 shrink-0"
+        />
+        <template v-if="isWide">
+          <span class="text-left text-xs px-1 mt-px">
+            {{ $t('search') }}
+          </span>
+          <span 
+            class="rounded-r-xl rounded-l-md mt-px border border-neutral-300/20 bg-neutral-500/10 px-1.5 py-0.5 text-xs leading-4"
+            :class="'dark:border-neutral-700 dark:bg-mauve-800'">
+            Ctrl K
+          </span>
+        </template>
       </span>
     </UButton>
     <template #content>

@@ -7,18 +7,33 @@ import Search from '~/components/nav-po/Search.vue'
 </script>
 
 <template class="sticky z-200">
+
+   <div class="flex items-center gap-2">
+    <Theme
+      :button-style="'hover:bg-orange-500'"
+    />
+    <!-- hover:bg-(--ui-nav-fyi-bg)2 bg-(--ui-nav-fyi-bg) -->
+    <Language
+      :button-style="'hover:bg-orange-500'"
+      :item-style="'hover:bg-orange-500'"
+      :select-style="'bg-orange-500'"
+    />
+
+    <Search />
+  </div>
+
   <!-- hover:bg-(--ui-nav-cpt-bg) -->
-  <Theme
+  <!-- <Theme
     :button-style="'hover:bg-orange-500'"
-  />
+  /> -->
   <!-- hover:bg-(--ui-nav-fyi-bg)2 bg-(--ui-nav-fyi-bg) -->
-  <Language
+  <!-- <Language
     :button-style="'hover:bg-orange-500'"
     :item-style="'hover:bg-orange-500'"
     :select-style="'bg-orange-500'"
-  />
+  /> -->
 
-  <Search class="relative right-102 bottom-11" />
+  <!-- <Search /> -->
   <!-- bg-(--ui-nav-cpt-bg)/70 hover:bg-(--ui-top-back) active:bg-(--ui-top-back) -->
   <TopBack
     :show-top="false"
