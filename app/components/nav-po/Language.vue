@@ -9,7 +9,7 @@ const styleEnt = withDefaults(defineProps<{
 }>(), {
   itemStyle: 'hover:bg-(--ui-nav-fyi-bg)',
   selectStyle: 'bg-(--ui-nav-fyi-bg)',
-  buttonStyle: 'hover:bg-(--ui-nav-cpt-bg)'
+  buttonStyle: 'hover:bg-(--ui-nav-cpt-bg) bg-transparent'
 })
 
 const localeOptions = [

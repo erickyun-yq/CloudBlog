@@ -8,7 +8,7 @@ const styleEnt = withDefaults(defineProps<
     buttonStyle?: string
     spanStyle?: string
   }>(), {
-  buttonStyle: 'bg-zinc-100 dark:bg-zinc-800 md:text-stone-600 md:dark:text-stone-400 text-highlighted',
+  buttonStyle: 'bg-transparent max-md:hover:bg-(--ui-nav-cpt-bg) md:bg-zinc-100 md:dark:bg-zinc-800 md:text-stone-600 md:dark:text-stone-400 text-highlighted',
   spanStyle: 'dark:border-neutral-700 dark:bg-mauve-800 border-neutral-400/20 bg-neutral-500/10'
 })
 const onResize = (e: MediaQueryListEvent) => {
@@ -64,6 +64,7 @@ onMounted(() => {
 <template>
   <UModal
     v-model:open="searchOpen"
+    :ui="{ overlay: 'bg-(--ui-mask)/60 backdrop-blur-xl' }"
     @update:open="onOpen"
   >
     <UButton

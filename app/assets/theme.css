@@ -297,6 +297,7 @@
     --ui-border-accented: var(--color-neutral-300);
     --ui-border-inverted: var(--color-neutral-900);
 
+    --ui-mask: var(--color-neutral-300);
     --ui-nav-bg: var(--color-sky-100);
     --ui-nav-cpt-bg: var(--color-sky-200);
     --ui-nav-fyi-bg: var(--color-sky-300);
@@ -324,9 +325,10 @@
     --ui-border-accented: var(--ui-color-neutral-600);
     --ui-border-inverted: #fff;
 
+    --ui-mask: var(--color-neutral-700);
     --ui-nav-bg: var(--color-neutral-800);
     --ui-nav-cpt-bg: var(--color-neutral-700);
     --ui-nav-fyi-bg: var(--color-neutral-600);
-
+   
     --ui-top-back: var(--color-neutral-800);
 }
