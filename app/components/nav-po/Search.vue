@@ -1,9 +1,16 @@
 <script setup lang="ts">
-import { computed, ref, defineProps } from 'vue'
-
 const searchOpen = ref(false)
 const searchTerm = ref('')
 const isWide = ref(true)
+
+const styleEnt = withDefaults(defineProps<
+  {
+    buttonStyle?: string
+    spanStyle?: string
+  }>(), {
+  buttonStyle: 'bg-zinc-100 dark:bg-zinc-800 md:text-stone-600 md:dark:text-stone-400 text-highlighted',
+  spanStyle: 'dark:border-neutral-700 dark:bg-mauve-800 border-neutral-400/20 bg-neutral-500/10'
+})
 const onResize = (e: MediaQueryListEvent) => {
   isWide.value = e.matches
 }
@@ -60,8 +67,8 @@ onMounted(() => {
     @update:open="onOpen"
   >
     <UButton
-      class="inline-flex justify-center h-8.5 min-w-8.5 rounded-full md:px-2 px-1.5 py-1.5 ring-0 bg-transparent! md:text-stone-500 text-highlighted hover:text-highlighted"
-      :class="'!md:bg-accented!'"
+      class="inline-flex justify-center h-8.5 min-w-8.5 rounded-full md:px-2 px-1.5 py-1.5 ring-0 hover:text-highlighted"
+      :class="styleEnt.buttonStyle"
       color="neutral"
       variant="subtle"
     >
@@ -77,9 +84,10 @@ onMounted(() => {
           <span class="text-left text-xs px-1 mt-px">
             {{ $t('search') }}
           </span>
-          <span 
-            class="rounded-r-xl rounded-l-md mt-px border border-neutral-300/20 bg-neutral-500/10 px-1.5 py-0.5 text-xs leading-4"
-            :class="'dark:border-neutral-700 dark:bg-mauve-800'">
+          <span
+            class="rounded-r-xl rounded-l-md border px-1.5 py-0.5 text-xs leading-4"
+            :class="styleEnt.spanStyle"
+          >
             Ctrl K
           </span>
         </template>
@@ -91,7 +99,7 @@ onMounted(() => {
         :loading="status === 'pending'"
         :groups="groups"
         placeholder="Search users..."
-        class="h-80"
+        class="h-120 w-120"
       />
     </template>
   </UModal>

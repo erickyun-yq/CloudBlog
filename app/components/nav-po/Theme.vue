@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { computed, onMounted, ref, useId, defineProps } from 'vue'
 import { useThemeStore } from '~/stores/ThemeStore'
 
 const styleEnt = withDefaults(defineProps<{

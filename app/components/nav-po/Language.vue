@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
-import { defineProps } from 'vue'
 
 const { locale, setLocale } = useI18n()
 const styleEnt = withDefaults(defineProps<{
