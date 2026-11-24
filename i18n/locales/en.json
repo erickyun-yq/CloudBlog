@@ -8,5 +8,6 @@
     "theme": "Theme",
     "language": "Language Toggle",
     "console": "Console",
-    "station": "Station Navigation"
+    "station": "Station Navigation",
+    "signIn": "Sign In"
 }

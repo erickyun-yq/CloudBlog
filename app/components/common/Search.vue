@@ -78,7 +78,7 @@ onMounted(() => {
         class="flex items-center gap-1"
       >
         <UIcon
-          name="hugeicons:search-01"
+          name="solar:rounded-magnifier-outline"
           class="h-5.5 w-5.5 md:h-4.5 md:w-4.5 shrink-0"
         />
         <template v-if="isWide">

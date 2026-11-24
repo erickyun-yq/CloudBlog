@@ -1,8 +1,20 @@
 <script setup lang="ts">
 const route = useRoute()
+const contentPath = decodeURI(route.path)
+const slug = Array.isArray(route.params.slug)
+  ? route.params.slug.join('/')
+  : route.params.slug
+const contentStem = `docus/${slug}`
 
-const { data: page } = await useAsyncData('page-' + route.path, () => {
-  return queryCollection('content').path(route.path).first()
+const { data: page } = await useAsyncData('page-' + contentPath, async () => {
+  const pageByPath = await queryCollection('content').path(contentPath).first()
+  if (pageByPath) {
+    return pageByPath
+  }
+
+  return queryCollection('content')
+    .where('stem', '=', contentStem)
+    .first()
 })
 
 if (!page.value) {
