@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import HTooltip from '~/components/common/HTooltip.vue'
 const open = ref(false)
 
 defineShortcuts({
@@ -11,15 +12,19 @@ defineShortcuts({
     v-model:open="open"
     :ui="{ overlay: 'bg-(--ui-mask)/60 backdrop-blur-xl' }"
   >
-    <UTooltip :text="$t('console')">
+    <HTooltip
+      v-slot="{ triggerProps }"
+      :text="$t('console')"
+    >
       <UButton
+        v-bind="triggerProps"
         class="rounded-full max-w-8.5 max-h-8.5 ring-0 bg-transparent hover:bg-(--ui-nav-cpt-bg)"
         color="neutral"
         variant="subtle"
         icon="solar:widget-6-bold"
         :ui="{ leadingIcon: 'h-5.5 w-5.5' }"
       />
-    </UTooltip>
+    </HTooltip>
     <template #content>
       <Placeholder class="h-48 m-4" />
     </template>

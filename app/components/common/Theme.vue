@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { useThemeStore } from '~/stores/ThemeStore'
+import HTooltip from './HTooltip.vue'
 
 const styleEnt = withDefaults(defineProps<{
   buttonStyle?: string
@@ -37,8 +38,12 @@ onMounted(() => store.init())
 </script>
 
 <template>
-  <UTooltip :text="$t('theme')">
+  <HTooltip
+    v-slot="{ triggerProps }"
+    :text="$t('theme')"
+  >
     <UButton
+      v-bind="triggerProps"
       aria-label="Toggle color theme"
       class="active:bg-auto rounded-full p-1.5 ring-0"
       :class="styleEnt.buttonStyle"
@@ -98,7 +103,7 @@ onMounted(() => store.init())
         </span>
       </template>
     </UButton>
-  </UTooltip>
+  </HTooltip>
 </template>
 
 <style scoped>

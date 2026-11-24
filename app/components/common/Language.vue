@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import type { DropdownMenuItem } from '@nuxt/ui'
+import HTooltip from './HTooltip.vue'
 
 const { locale, setLocale } = useI18n()
 const styleEnt = withDefaults(defineProps<{
@@ -50,8 +51,12 @@ const items = computed<DropdownMenuItem[]>(() =>
            itemLeadingIcon: 'size-2 shrink-0 text-neutral-400!',
            itemLabel: 'whitespace-nowrap text-sm leading-4 w-20 text-start' }"
   >
-    <UTooltip :text="$t('language')">
+    <HTooltip
+      v-slot="{ triggerProps }"
+      :text="$t('language')"
+    >
       <UButton
+        v-bind="triggerProps"
         class="active:bg-auto rounded-full! ring-0! p-1.5!"
         :class="styleEnt.buttonStyle"
         icon="hugeicons:translation"
@@ -60,6 +65,6 @@ const items = computed<DropdownMenuItem[]>(() =>
         size="lg"
         :ui="{ leadingIcon: 'size-5.5' }"
       />
-    </UTooltip>
+    </HTooltip>
   </UDropdownMenu>
 </template>
