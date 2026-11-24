@@ -1,8 +1,8 @@
 <script setup>
 import FuzzyText from '../components/error/FuzzyText.vue'
-import TopBack from '../components/nav-po/TopBack.vue'
-import Language from '../components/nav-po/Language.vue'
-import Theme from '../components/nav-po/Theme.vue'
+import TopBack from '../components/common/TopBack.vue/index.js'
+import Language from '../components/common/Language.vue/index.js'
+import Theme from '../components/common/Theme.vue/index.js'
 import Search from '~/components/nav-po/Search.vue'
 import Console from '~/components/nav-po/Console.vue'
 import Station from '~/components/nav-po/Station.vue'
@@ -15,11 +15,21 @@ import StationAll from '~/components/nav-po/StationAll.vue'
       <div class="flex items-center">
         <Station class="h-5.5 w-5.5 md:flex hidden" />
         <StationAll class="h-5.5 w-5.5 md:hidden flex" />
-        <div class="text-xl px-1">云轩柒的小栈</div>
-        <div class="text-xl px-1">{{ $t('homePage') }}</div>
-        <div class="text-xl px-1">{{ $t('archived') }}</div>
-        <div class="text-xl px-1">{{ $t('categories') }}</div>
-        <div class="text-xl px-1">{{ $t('tags') }}</div>
+        <div class="text-xl px-1">
+          云轩柒的小栈
+        </div>
+        <div class="text-xl px-1">
+          {{ $t('homePage') }}
+        </div>
+        <div class="text-xl px-1">
+          {{ $t('archived') }}
+        </div>
+        <div class="text-xl px-1">
+          {{ $t('categories') }}
+        </div>
+        <div class="text-xl px-1">
+          {{ $t('tags') }}
+        </div>
       </div>
       <div class="flex items-center gap-2">
         <Search />
