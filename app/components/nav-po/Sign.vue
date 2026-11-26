@@ -3,6 +3,7 @@ import HTooltip from '~/components/common/HTooltip.vue'
 import AuthLogin from '../auth/AuthLogin.vue'
 
 const open = ref(false)
+const verifyCodeError = ref('')
 
 defineShortcuts({
   o: () => open.value = !open.value
@@ -41,7 +42,8 @@ defineShortcuts({
       />
     </HTooltip>
     <template #body>
-      <AuthLogin />
+      <AuthLogin :verify-code-error="verifyCodeError"
+/>
     </template>
   </UModal>
 </template>l
