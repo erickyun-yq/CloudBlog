@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HTooltip from '~/components/common/HTooltip.vue'
+
 const open = ref(false)
 
 defineShortcuts({
@@ -26,7 +27,7 @@ defineShortcuts({
       />
     </HTooltip>
     <template #content>
-      <Placeholder class="h-48 m-4" />
+      <UEmpty class="h-48 m-4" />
     </template>
   </UModal>
 </template>

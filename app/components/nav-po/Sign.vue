@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import HTooltip from '~/components/common/HTooltip.vue'
+import AuthLogin from '../auth/AuthLogin.vue'
 
 const open = ref(false)
 
@@ -11,9 +12,18 @@ defineShortcuts({
 <template>
   <UModal
     v-model:open="open"
+    close-icon="mingcute:close-fill"
+    :close="{
+      ui: {
+        base: 'px-0! py-0! hover:bg-transparent w-7.5 h-7.5 rounded-full ring-1 ring-black/5 dark:ring-white/5 flex justify-center',
+        leadingIcon: 'h-5.5 w-5.5 hover:opacity-80 opacity-30',
+      },
+    }"
     :ui="{
-      overlay: 'bg-(--ui-mask)/88 backdrop-blur-xl',
-      content: 'rounded-full'
+      content: 'w-[88dvw] h-150  max-sm:h-[77dvh] min-w-88 max-w-md max-h-none rounded-2xl ring-0',
+      header: 'border-0 px-3! py-3',
+      wrapper: 'px-0 py-0',
+      body: 'px-3! py-3! text-center',
     }"
   >
     <HTooltip
@@ -26,12 +36,12 @@ defineShortcuts({
         :class="'bg-(--ui-nav-cpt-bg) hover:text-highlighted max-md:hover:bg-transparent'"
         color="neutral"
         variant="subtle"
-        icon="fa7-solid:sign-in-alt"
+        icon="uix-solid:user"
         :ui="{ leadingIcon: 'h-5.5 w-5.5 max-md:h-7 max-md:w-7' }"
       />
     </HTooltip>
-    <template #content>
-      <Placeholder class="min-w-xs h-dvh sm:h-120 sm:w-lg rounded-full" />
+    <template #body>
+      <AuthLogin />
     </template>
   </UModal>
 </template>l

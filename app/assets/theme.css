@@ -286,7 +286,7 @@
     --ui-text-highlighted: var(--color-neutral-900);
     --ui-text-inverted: #fff;
 
-    --ui-bg: var(--color-indigo-50);
+    --ui-bg: var(--color-violet-50);
     --ui-bg-muted: var(--color-neutral-50);
     --ui-bg-elevated: var(--color-neutral-100);
     --ui-bg-accented: var(--color-neutral-200);
@@ -294,10 +294,12 @@
 
     --ui-border: var(--color-neutral-200);
     --ui-border-muted: var(--color-neutral-200);
-    --ui-border-accented: var(--color-neutral-300);
+    --ui-border-accented: var(--color-neutral-400);
     --ui-border-inverted: var(--color-neutral-900);
 
-    --ui-mask: var(--color-neutral-300);
+    --ui-mask: var(--color-neutral-50);
+    --ui-model: #fff;
+
     --ui-nav-bg: var(--color-sky-100);
     --ui-nav-cpt-bg: var(--color-sky-200);
     --ui-nav-fyi-bg: var(--color-sky-300);
@@ -322,10 +324,12 @@
 
     --ui-border: var(--color-stone-700);
     --ui-border-muted: var(--color-neutral-700);
-    --ui-border-accented: var(--ui-color-neutral-600);
+    --ui-border-accented: var(--color-neutral-600);
     --ui-border-inverted: #fff;
 
-    --ui-mask: var(--color-neutral-700);
+    --ui-mask: var(--color-stone-950);
+    --ui-model: var(--color-neutral-900);
+
     --ui-nav-bg: var(--color-neutral-800);
     --ui-nav-cpt-bg: var(--color-stone-700);
     --ui-nav-fyi-bg: var(--color-neutral-600);

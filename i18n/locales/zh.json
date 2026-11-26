@@ -9,5 +9,11 @@
     "language": "语言切换",
     "console": "控制台",
     "station": "站点导航",
-    "signIn": "登录"
+    "signIn": "登录",
+    "accountLogin": "账号登录",
+    "verifyCode": "验证码登录",
+    "passKey": "PassKey登录",
+    "account": "请输入用户名/邮箱",
+    "password": "请输入密码",
+    "login": "登录"
 }

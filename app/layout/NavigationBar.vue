@@ -19,17 +19,19 @@ import Sign from '~/components/nav-po/Sign.vue'
         <div class="text-xl px-1">
           云轩柒的小栈
         </div>
-        <div class="text-xl px-1">
-          {{ $t('homePage') }}
-        </div>
-        <div class="text-xl px-1">
-          {{ $t('archived') }}
-        </div>
-        <div class="text-xl px-1">
-          {{ $t('categories') }}
-        </div>
-        <div class="text-xl px-1">
-          {{ $t('tags') }}
+        <div class="max-sm:hidden block">
+          <div class="text-xl px-1">
+            {{ $t('homePage') }}
+          </div>
+          <div class="text-xl px-1">
+            {{ $t('archived') }}
+          </div>
+          <div class="text-xl px-1">
+            {{ $t('categories') }}
+          </div>
+          <div class="text-xl px-1">
+            {{ $t('tags') }}
+          </div>
         </div>
       </div>
       <div class="flex items-center gap-2">
