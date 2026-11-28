@@ -26,7 +26,11 @@
 
     "passKey": "PassKey",
     "passkeyLogin": "Sign in with a passkey",
-    
+    "passkeyAuthenticating": "Complete verification on your device...",
+    "passkeyUnavailable": "Passkeys require a secure context (HTTPS or localhost).",
+    "passkeyFailed": "Passkey authentication failed or was cancelled. Try again.",
+    "passkeyAssertionReady": "Device assertion created; server verification is not connected.",
+
     "login": "Login in",
     "forgetPassword": "Forget Password",
     "noAccount": "No Account?",

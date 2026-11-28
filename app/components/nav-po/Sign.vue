@@ -5,10 +5,12 @@ import AuthLogin from '../auth/AuthLogin.vue'
 const open = ref(false)
 const verifyCodeError = ref('')
 const loginError = ref('')
+const passkeyStatus = ref('')
 
 const clearAuthErrors = () => {
   verifyCodeError.value = ''
   loginError.value = ''
+  passkeyStatus.value = ''
 }
 
 const handleRequestCode = (request: {
@@ -17,6 +19,37 @@ const handleRequestCode = (request: {
   onError: (message: string) => void
 }) => {
   request.onSuccess()
+}
+
+const handlePasskeyOptionsRequest = (request: {
+  onSuccess: (options: PublicKeyCredentialRequestOptions) => void
+  onError: (message: string) => void
+}) => {
+  passkeyStatus.value = ''
+  if (!window.isSecureContext) {
+    request.onError($t('passkeyUnavailable'))
+    return
+  }
+
+  // Demo only: production must obtain a fresh challenge from the authentication server.
+  try {
+    const challenge = new ArrayBuffer(32)
+    window.crypto.getRandomValues(new Uint8Array(challenge))
+    request.onSuccess({
+      challenge,
+      rpId: window.location.hostname,
+      timeout: 60_000,
+      userVerification: 'preferred'
+    })
+  } catch {
+    request.onError($t('passkeyFailed'))
+  }
+}
+
+const handlePasskeyAssertion = (assertion: { response: { signature: string } }) => {
+  passkeyStatus.value = assertion.response.signature
+    ? $t('passkeyAssertionReady')
+    : $t('passkeyFailed')
 }
 
 defineShortcuts({
@@ -59,8 +92,11 @@ defineShortcuts({
       <AuthLogin
         :verify-code-error="verifyCodeError"
         :login-error="loginError"
+        :passkey-status="passkeyStatus"
         @clear-errors="clearAuthErrors"
         @request-code="handleRequestCode"
+        @request-passkey-options="handlePasskeyOptionsRequest"
+        @passkey-assertion="handlePasskeyAssertion"
       />
     </template>
   </UModal>

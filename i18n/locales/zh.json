@@ -26,6 +26,10 @@
 
     "passKey": "PassKey登录",
     "passkeyLogin": "使用通行密钥登录",
+    "passkeyAuthenticating": "请在设备上完成验证...",
+    "passkeyUnavailable": "当前环境不支持 Passkey，请使用 HTTPS 或 localhost。",
+    "passkeyFailed": "Passkey 验证失败或已取消，请重试。",
+    "passkeyAssertionReady": "设备签名已生成，尚未连接服务端验证。",
 
     "login": "登录",
     "forgetPassword": "忘记密码",

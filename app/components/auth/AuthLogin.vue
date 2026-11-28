@@ -1,21 +1,55 @@
 <script setup lang="ts">
 import type { ToggleGroupItem } from '@nuxt/ui/components/ToggleGroup.vue'
 
-const show = ref(false)
+type PasskeyAssertionPayload = {
+  id: string
+  rawId: string
+  type: PublicKeyCredentialType
+  response: {
+    authenticatorData: string
+    clientDataJSON: string
+    signature: string
+    userHandle: string | null
+  }
+}
+
+const items = ref<ToggleGroupItem[]>([
+  {
+    label: $t('accountLogin'),
+    value: 'account'
+  },
+  {
+    label: $t('verifyCode'),
+    value: 'verify'
+  },
+  {
+    label: $t('passKey'),
+    value: 'passkey'
+  }
+])
+
+const loginType = ref('account')
 const account = ref('')
 const password = ref('')
+const show = ref(false)
+
 const verifyCode = ref('')
-const loginType = ref('verify')
-const emailFormatError = ref('')
-const verifyCodeFormatError = ref('')
-const requestCodeError = ref('')
 const codeCountdown = ref(0)
 const isRequestingCode = ref(false)
+const verifyCodeFormatError = ref('')
+
+const isPasskeyAuthenticating = ref(false)
+const passkeyError = ref('')
+
+const emailFormatError = ref('')
+const requestCodeError = ref('')
+const emailError = computed(() => emailFormatError.value || requestCodeError.value)
+
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const verifyCodePattern = /^\d{6}$/
 const isEmailValid = computed(() => emailPattern.test(account.value.trim()))
-const emailError = computed(() => emailFormatError.value || requestCodeError.value)
+
 // For the code field, show local format feedback before a server-reported error.
 const codeError = computed(() => verifyCodeFormatError.value || authProps.verifyCodeError || '')
 let codeCountdownTimer: ReturnType<typeof setInterval> | undefined
@@ -24,6 +58,7 @@ const authProps = defineProps<{
   loginError?: string
   verifyCodeError?: string
   componentType?: string
+  passkeyStatus?: string
 }>()
 
 // The parent handles authentication and navigation. Request-code callbacks report
@@ -44,22 +79,12 @@ const emit = defineEmits<{
     onSuccess: () => void
     onError: (message: string) => void
   }]
+  'request-passkey-options': [payload: {
+    onSuccess: (options: PublicKeyCredentialRequestOptions) => void
+    onError: (message: string) => void
+  }]
+  'passkey-assertion': [payload: PasskeyAssertionPayload]
 }>()
-
-const items = ref<ToggleGroupItem[]>([
-  {
-    label: $t('accountLogin'),
-    value: 'account'
-  },
-  {
-    label: $t('verifyCode'),
-    value: 'verify'
-  },
-  {
-    label: $t('passKey'),
-    value: 'passkey'
-  }
-])
 
 // Clear credentials, validation/server errors, and any active cooldown on mode changes.
 const onLoginType = (value: string | undefined) => {
@@ -70,6 +95,7 @@ const onLoginType = (value: string | undefined) => {
     emailFormatError.value = ''
     verifyCodeFormatError.value = ''
     requestCodeError.value = ''
+    passkeyError.value = ''
     isRequestingCode.value = false
     stopCodeCountdown()
     loginType.value = value
@@ -99,10 +125,6 @@ const startCodeCountdown = () => {
     codeCountdown.value -= 1
   }, 1000)
 }
-
-onBeforeUnmount(() => {
-  stopCodeCountdown()
-})
 
 // Called on email blur and before requesting a code; empty input is handled by button state.
 const validateEmail = () => {
@@ -204,6 +226,83 @@ const onRequestCode = () => {
     }
   })
 }
+
+const toBase64Url = (buffer: ArrayBuffer) => {
+  const bytes = new Uint8Array(buffer)
+  let binary = ''
+  for (const byte of bytes) {
+    binary += String.fromCharCode(byte)
+  }
+
+  return btoa(binary)
+    .replace(/\+/g, '-')
+    .replace(/\//g, '_')
+    .replace(/=+$/g, '')
+}
+
+const completePasskeyLogin = async (options: PublicKeyCredentialRequestOptions) => {
+  try {
+    const credential = await navigator.credentials.get({ publicKey: options })
+    if (!(credential instanceof PublicKeyCredential)) {
+      throw new Error('No public-key credential was returned.')
+    }
+
+    if (!(credential.response instanceof AuthenticatorAssertionResponse)) {
+      throw new Error('No authenticator assertion was returned.')
+    }
+
+    const { response } = credential
+    // The authenticator returns a signed assertion; its private key never leaves the device.
+    emit('passkey-assertion', {
+      id: credential.id,
+      rawId: toBase64Url(credential.rawId),
+      type: 'public-key',
+      response: {
+        authenticatorData: toBase64Url(response.authenticatorData),
+        clientDataJSON: toBase64Url(response.clientDataJSON),
+        signature: toBase64Url(response.signature),
+        userHandle: response.userHandle ? toBase64Url(response.userHandle) : null
+      }
+    })
+  } catch {
+    passkeyError.value = $t('passkeyFailed')
+  } finally {
+    isPasskeyAuthenticating.value = false
+  }
+}
+
+const onPasskeyLogin = () => {
+  if (isPasskeyAuthenticating.value) {
+    return
+  }
+
+  passkeyError.value = ''
+  if (
+    typeof window === 'undefined'
+    || !window.isSecureContext
+    || typeof PublicKeyCredential === 'undefined'
+    || typeof navigator === 'undefined'
+    || !navigator.credentials?.get
+  ) {
+    passkeyError.value = $t('passkeyUnavailable')
+    return
+  }
+
+  isPasskeyAuthenticating.value = true
+  emit('request-passkey-options', {
+    onSuccess: (options) => {
+      void completePasskeyLogin(options)
+    },
+    onError: (message) => {
+      isPasskeyAuthenticating.value = false
+      passkeyError.value = message
+    }
+  })
+}
+
+onBeforeUnmount(() => {
+  stopCodeCountdown()
+})
 </script>
 
 <template>
@@ -383,10 +482,24 @@ const onRequestCode = () => {
       color="primary"
       icon="flowbite:fingerprint-solid"
       class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 active:bg-blue-700 text-white"
-      :disabled="isLoginDisabled"
-      @click="onLogin"
+      :disabled="isPasskeyAuthenticating"
+      @click="onPasskeyLogin"
     >
-    <span class="mt-0.5">{{ $t('passkeyLogin') }}</span>
+      <span class="mt-0.5">
+        {{ isPasskeyAuthenticating ? $t('passkeyAuthenticating') : $t('passkeyLogin') }}
+      </span>
     </UButton>
+    <p
+      v-if="passkeyError"
+      class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
+    >
+      {{ passkeyError }}
+    </p>
+    <p
+      v-if="authProps.passkeyStatus"
+      class="text-left text-[.8rem] text-green-600 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
+    >
+      {{ authProps.passkeyStatus }}
+    </p>
   </div>
 </template>
