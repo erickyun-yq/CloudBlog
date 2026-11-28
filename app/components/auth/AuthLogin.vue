@@ -445,7 +445,7 @@ onBeforeUnmount(() => {
       <UButton
         type="submit"
         color="undefined"
-        class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 active:bg-blue-700 text-white"
+        class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 disabled:active:bg-blue-600 disabled:pointer-events-none disabled:cursor-not-allowed disabled:opacity-50 active:bg-blue-700 text-white"
         :disabled="isLoginDisabled"
       >
         {{ $t('login') }}

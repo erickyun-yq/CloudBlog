@@ -20,7 +20,7 @@
     "invalidEmail": "Enter a valid email address.",
     "getCode": "Get code",
     "sendingCode": "Sending...",
-    "resendCodeCountdown": "Resend in {seconds}s",
+    "resendCodeCountdown": "Try again in {seconds}s",
     "code": "Enter your verification code.",
     "invalidVerifyCode": "Verification code must be exactly 6 digits.",
 
