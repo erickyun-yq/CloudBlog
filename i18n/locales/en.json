@@ -10,14 +10,19 @@
     "console": "Console",
     "station": "Station Navigation",
     "signIn": "Sign In",
+
     "accountLogin": "Password",
-    "verifyCode": "Verification Code",
-    "passKey": "PassKey",
     "account": "Enter your username/email.",
+    "password": "Enter your password.",
+
+    "verifyCode": "Verification Code",
     "email": "Enter your email.",
     "invalidEmail": "Enter a valid email address.",
+    "code": "Enter your verification code.",
     "invalidVerifyCode": "Verification code must be exactly 6 digits.",
-    "password": "Enter your password.",
+
+    "passKey": "PassKey",
+    
     "login": "Login in",
     "forgetPassword": "Forget Password",
     "noAccount": "No Account?",

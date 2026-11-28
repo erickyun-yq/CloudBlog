@@ -10,14 +10,19 @@
     "console": "控制台",
     "station": "站点导航",
     "signIn": "登录",
+
     "accountLogin": "账号登录",
-    "verifyCode": "验证码登录",
-    "passKey": "PassKey登录",
     "account": "请输入用户名/邮箱",
+    "password": "请输入密码",
+
+    "verifyCode": "验证码登录",
     "email": "请输入邮箱",
     "invalidEmail": "请输入有效的邮箱地址",
+    "code": "请输入验证码",
     "invalidVerifyCode": "验证码必须为 6 位数字",
-    "password": "请输入密码",
+
+    "passKey": "PassKey登录",
+
     "login": "登录",
     "forgetPassword": "忘记密码",
     "noAccount": "没有账号?",

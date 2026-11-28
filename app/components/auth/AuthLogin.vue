@@ -126,103 +126,109 @@ const onComponent = (value: string | undefined) => {
     @update:model-value="onLoginType($event?.toString())"
   />
 
-  <div v-if="loginType === 'account'">
-    <UInput
-      v-model="account"
-      name="username"
-      autocomplete="username"
-      class="w-[72%] min-w-36 max-sm:w-62"
-      :placeholder="$t('account')"
-      :ui="{
-        base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none mb-6',
-        trailing: 'pe-1',
-      }"
-    />
-    <UInput
-      v-model="password"
-      name="password"
-      autocomplete="current-password"
-      class="w-[72%] min-w-36 max-sm:w-62"
-      :placeholder="$t('password')"
-      :type="show ? 'text' : 'password'"
-      :ui="{
-        base: `h-10 rounded-lg bg-transparent placeholder:text-[14px] placeholder:tracking-normal ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none ${show ? '' : 'tracking-[-4px]'}`,
-        trailing: 'pe-1',
-      }"
-    >
-      <template #trailing>
-        <UButton
-          color="neutral"
-          variant="link"
-          size="lg"
-          :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
-          :aria-label="show ? 'Hide password' : 'Show password'"
-          :aria-pressed="show"
-          aria-controls="password"
-          @click="show = !show"
-        />
-      </template>
-    </UInput>
-    <p
-      v-if="authProps.loginError"
-      class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
-    >
-      {{ authProps.loginError }}
-    </p>
-  </div>
-
-  <div v-else-if="loginType === 'verify'">
-    <div class="mb-6">
+  <form autocomplete="on" @submit.prevent="onLogin">
+    <div v-if="loginType === 'account'">
       <UInput
         v-model="account"
+        name="username"
+        autocomplete="username"
         class="w-[72%] min-w-36 max-sm:w-62"
-        type="email"
-        :placeholder="$t('email')"
+        :placeholder="$t('account')"
+        :ui="{
+          base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none mb-6',
+          trailing: 'pe-1',
+        }"
+      />
+      <UInput
+        v-model="password"
+        name="password"
+        autocomplete="current-password"
+        class="w-[72%] min-w-36 max-sm:w-62"
+        :placeholder="$t('password')"
+        :type="show ? 'text' : 'password'"
+        :ui="{
+          base: `h-10 rounded-lg bg-transparent placeholder:text-[14px] placeholder:tracking-normal ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none ${show ? '' : 'tracking-[-4px]'}`,
+          trailing: 'pe-1',
+        }"
+      >
+        <template #trailing>
+          <UButton
+            type="button"
+            color="neutral"
+            variant="link"
+            size="lg"
+            :icon="show ? 'i-lucide-eye-off' : 'i-lucide-eye'"
+            :aria-label="show ? 'Hide password' : 'Show password'"
+            :aria-pressed="show"
+            aria-controls="password"
+            @click="show = !show"
+          />
+        </template>
+      </UInput>
+      <p
+        v-if="authProps.loginError"
+        class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
+      >
+        {{ authProps.loginError }}
+      </p>
+    </div>
+
+    <div v-else-if="loginType === 'verify'">
+      <div class="mb-6">
+        <UInput
+          v-model="account"
+          name="email"
+          autocomplete="email"
+          class="w-[72%] min-w-36 max-sm:w-62"
+          type="email"
+          :placeholder="$t('email')"
+          :ui="{
+            base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none',
+            trailing: 'pe-1',
+          }"
+          @blur="validateEmail"
+          @update:model-value="clearEmailFormatError"
+        />
+        <p
+          v-if="emailFormatError"
+          class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
+        >
+          {{ emailFormatError }}
+        </p>
+      </div>
+      <UInput
+        v-model="verifyCode"
+        name="one-time-code"
+        autocomplete="one-time-code"
+        class="w-[72%] min-w-36 max-sm:w-62"
+        inputmode="numeric"
+        maxlength="6"
+        :placeholder="$t('code')"
         :ui="{
           base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none',
           trailing: 'pe-1',
         }"
-        @blur="validateEmail"
-        @update:model-value="clearEmailFormatError"
+        @blur="validateVerifyCode"
+        @update:model-value="clearVerifyCodeFormatError"
       />
       <p
-        v-if="emailFormatError"
+        v-if="verifyCodeFormatError || authProps.verifyCodeError"
         class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
       >
-        {{ emailFormatError }}
+        {{ verifyCodeFormatError || authProps.verifyCodeError }}
       </p>
     </div>
-    <UInput
-      v-model="verifyCode"
-      class="w-[72%] min-w-36 max-sm:w-62"
-      inputmode="numeric"
-      maxlength="6"
-      :placeholder="$t('verifyCode')"
-      :ui="{
-        base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none',
-        trailing: 'pe-1',
-      }"
-      @blur="validateVerifyCode"
-      @update:model-value="clearVerifyCodeFormatError"
-    />
-    <p
-      v-if="verifyCodeFormatError || authProps.verifyCodeError"
-      class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
-    >
-      {{ verifyCodeFormatError || authProps.verifyCodeError }}
-    </p>
-  </div>
-  <div v-if="loginType === 'account' || loginType === 'verify'">
-    <UButton
-      type="button"
-      color="undefined"
-      class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 active:bg-blue-700 text-white"
-      :disabled="isLoginDisabled"
-      @click="onLogin"
-    >
-      {{ $t('login') }}
-    </UButton>
-  </div>
+    <div v-if="loginType === 'account' || loginType === 'verify'">
+      <UButton
+        type="submit"
+        color="undefined"
+        class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 active:bg-blue-700 text-white"
+        :disabled="isLoginDisabled"
+      >
+        {{ $t('login') }}
+      </UButton>
+    </div>
+  </form>
   <div
     v-if="loginType === 'account'"
     class="flex justify-between text-left text-sm mx-auto w-[72%] min-w-36 max-sm:w-62 mt-6"
