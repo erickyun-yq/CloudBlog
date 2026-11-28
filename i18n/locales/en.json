@@ -14,6 +14,12 @@
     "verifyCode": "Verification Code",
     "passKey": "PassKey",
     "account": "Enter your username/email.",
+    "email": "Enter your email.",
+    "invalidEmail": "Enter a valid email address.",
+    "invalidVerifyCode": "Verification code must be exactly 6 digits.",
     "password": "Enter your password.",
-    "login": "Login in"
+    "login": "Login in",
+    "forgetPassword": "Forget Password",
+    "noAccount": "No Account?",
+    "signUp": "Sign Up"
 }

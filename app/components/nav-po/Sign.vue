@@ -4,6 +4,12 @@ import AuthLogin from '../auth/AuthLogin.vue'
 
 const open = ref(false)
 const verifyCodeError = ref('')
+const loginError = ref('')
+
+const clearAuthErrors = () => {
+  verifyCodeError.value = ''
+  loginError.value = ''
+}
 
 defineShortcuts({
   o: () => open.value = !open.value
@@ -42,8 +48,11 @@ defineShortcuts({
       />
     </HTooltip>
     <template #body>
-      <AuthLogin :verify-code-error="verifyCodeError"
-/>
+      <AuthLogin
+        :verify-code-error="verifyCodeError"
+        :login-error="loginError"
+        @clear-errors="clearAuthErrors"
+      />
     </template>
   </UModal>
 </template>l
