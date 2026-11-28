@@ -8,9 +8,17 @@ const verifyCode = ref('')
 const loginType = ref('verify')
 const emailFormatError = ref('')
 const verifyCodeFormatError = ref('')
+const requestCodeError = ref('')
+const codeCountdown = ref(0)
+const isRequestingCode = ref(false)
 
 const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/
 const verifyCodePattern = /^\d{6}$/
+const isEmailValid = computed(() => emailPattern.test(account.value.trim()))
+const emailError = computed(() => emailFormatError.value || requestCodeError.value)
+// For the code field, show local format feedback before a server-reported error.
+const codeError = computed(() => verifyCodeFormatError.value || authProps.verifyCodeError || '')
+let codeCountdownTimer: ReturnType<typeof setInterval> | undefined
 
 const authProps = defineProps<{
   loginError?: string
@@ -18,6 +26,8 @@ const authProps = defineProps<{
   componentType?: string
 }>()
 
+// The parent handles authentication and navigation. Request-code callbacks report
+// the asynchronous send result so this component can manage the resend cooldown.
 const emit = defineEmits<{
   'login': [payload: {
     account: string
@@ -29,6 +39,11 @@ const emit = defineEmits<{
     componentType: string
   }]
   'clear-errors': []
+  'request-code': [payload: {
+    email: string
+    onSuccess: () => void
+    onError: (message: string) => void
+  }]
 }>()
 
 const items = ref<ToggleGroupItem[]>([
@@ -46,6 +61,7 @@ const items = ref<ToggleGroupItem[]>([
   }
 ])
 
+// Clear credentials, validation/server errors, and any active cooldown on mode changes.
 const onLoginType = (value: string | undefined) => {
   if (value !== undefined && value !== loginType.value) {
     account.value = ''
@@ -53,20 +69,56 @@ const onLoginType = (value: string | undefined) => {
     verifyCode.value = ''
     emailFormatError.value = ''
     verifyCodeFormatError.value = ''
+    requestCodeError.value = ''
+    isRequestingCode.value = false
+    stopCodeCountdown()
     loginType.value = value
     emit('clear-errors')
   }
 }
 
+const stopCodeCountdown = () => {
+  if (codeCountdownTimer) {
+    clearInterval(codeCountdownTimer)
+    codeCountdownTimer = undefined
+  }
+  codeCountdown.value = 0
+}
+
+// Start the cooldown only after the parent confirms success. The shared stop helper
+// also clears the interval before restarting it or when the component unmounts.
+const startCodeCountdown = () => {
+  stopCodeCountdown()
+  codeCountdown.value = 60
+  codeCountdownTimer = setInterval(() => {
+    if (codeCountdown.value <= 1) {
+      stopCodeCountdown()
+      return
+    }
+
+    codeCountdown.value -= 1
+  }, 1000)
+}
+
+onBeforeUnmount(() => {
+  stopCodeCountdown()
+})
+
+// Called on email blur and before requesting a code; empty input is handled by button state.
 const validateEmail = () => {
   const value = account.value.trim()
   emailFormatError.value = value && !emailPattern.test(value) ? $t('invalidEmail') : ''
 }
 
+// Editing the email clears local email/request errors and asks the parent to clear
+// stale server errors for the previous credentials.
 const clearEmailFormatError = () => {
   emailFormatError.value = ''
+  requestCodeError.value = ''
+  emit('clear-errors')
 }
 
+// The verification code must contain exactly six digits; this runs when its input loses focus.
 const validateVerifyCode = () => {
   const value = verifyCode.value.trim()
   verifyCodeFormatError.value = value && !verifyCodePattern.test(value)
@@ -74,11 +126,19 @@ const validateVerifyCode = () => {
     : ''
 }
 
+// Editing the code clears its local format error and any stale server error from the parent.
 const clearVerifyCodeFormatError = () => {
   verifyCodeFormatError.value = ''
+  emit('clear-errors')
+}
+
+const clearLoginError = () => {
+  emit('clear-errors')
 }
 
 const isLoginDisabled = computed(() => {
+  // Account mode requires username/password; verify mode requires valid email/six-digit code.
+  // Passkey mode has no text fields and delegates authentication to the parent.
   if (loginType.value === 'account') {
     return !account.value.trim() || !password.value.trim()
   }
@@ -87,6 +147,10 @@ const isLoginDisabled = computed(() => {
     const email = account.value.trim()
     const code = verifyCode.value.trim()
     return !email || !code || !emailPattern.test(email) || !verifyCodePattern.test(code)
+  }
+
+  if (loginType.value === 'passkey') {
+    return false
   }
 
   return true
@@ -112,6 +176,34 @@ const onComponent = (value: string | undefined) => {
     })
   }
 }
+
+const onRequestCode = () => {
+  validateEmail()
+
+  // Reject invalid email, duplicate requests, and active cooldowns before emitting
+  // the trimmed address to the parent.
+  if (!isEmailValid.value || isRequestingCode.value || codeCountdown.value > 0) {
+    return
+  }
+
+  requestCodeError.value = ''
+  const requestedEmail = account.value.trim()
+  isRequestingCode.value = true
+  emit('request-code', {
+    email: requestedEmail,
+    onSuccess: () => {
+      isRequestingCode.value = false
+      requestCodeError.value = ''
+      if (loginType.value === 'verify' && account.value.trim() === requestedEmail) {
+        startCodeCountdown()
+      }
+    },
+    onError: (message) => {
+      isRequestingCode.value = false
+      requestCodeError.value = message
+    }
+  })
+}
 </script>
 
 <template>
@@ -126,23 +218,31 @@ const onComponent = (value: string | undefined) => {
     @update:model-value="onLoginType($event?.toString())"
   />
 
-  <form autocomplete="on" @submit.prevent="onLogin">
+  <!-- One form hosts the conditional password and email-code login flows. -->
+  <form
+    autocomplete="on"
+    @submit.prevent="onLogin"
+  >
     <div v-if="loginType === 'account'">
+      <!-- These names and autocomplete values help password managers identify credentials. -->
       <UInput
         v-model="account"
         name="username"
         autocomplete="username"
+        maxlength="64"
         class="w-[72%] min-w-36 max-sm:w-62"
         :placeholder="$t('account')"
         :ui="{
           base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none mb-6',
           trailing: 'pe-1',
         }"
+        @update:model-value="clearLoginError"
       />
       <UInput
         v-model="password"
         name="password"
         autocomplete="current-password"
+        maxlength="48"
         class="w-[72%] min-w-36 max-sm:w-62"
         :placeholder="$t('password')"
         :type="show ? 'text' : 'password'"
@@ -150,6 +250,7 @@ const onComponent = (value: string | undefined) => {
           base: `h-10 rounded-lg bg-transparent placeholder:text-[14px] placeholder:tracking-normal ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none ${show ? '' : 'tracking-[-4px]'}`,
           trailing: 'pe-1',
         }"
+        @update:model-value="clearLoginError"
       >
         <template #trailing>
           <UButton
@@ -174,13 +275,16 @@ const onComponent = (value: string | undefined) => {
     </div>
 
     <div v-else-if="loginType === 'verify'">
+      <!-- Show local format errors or parent-reported errors beside the related fields. -->
       <div class="mb-6">
         <UInput
           v-model="account"
           name="email"
           autocomplete="email"
+          maxlength="64"
           class="w-[72%] min-w-36 max-sm:w-62"
           type="email"
+          :disabled="isRequestingCode"
           :placeholder="$t('email')"
           :ui="{
             base: 'h-10 rounded-lg bg-transparent placeholder:text-[14px] ring-[0.34px] hover:ring-blue-500 focus-visible:ring-blue-500 focus-visible:outline-none',
@@ -190,10 +294,10 @@ const onComponent = (value: string | undefined) => {
           @update:model-value="clearEmailFormatError"
         />
         <p
-          v-if="emailFormatError"
+          v-if="emailError"
           class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
         >
-          {{ emailFormatError }}
+          {{ emailError }}
         </p>
       </div>
       <UInput
@@ -210,14 +314,34 @@ const onComponent = (value: string | undefined) => {
         }"
         @blur="validateVerifyCode"
         @update:model-value="clearVerifyCodeFormatError"
-      />
+      >
+        <template #trailing>
+          <UButton
+            type="button"
+            :color="isEmailValid && codeCountdown === 0 && !isRequestingCode ? 'info' : 'neutral'"
+            variant="link"
+            class="px-2"
+            :disabled="!isEmailValid || codeCountdown > 0 || isRequestingCode"
+            @click="onRequestCode"
+          >
+            {{
+              codeCountdown > 0
+                ? $t('resendCodeCountdown', { seconds: codeCountdown })
+                : isRequestingCode
+                  ? $t('sendingCode')
+                  : $t('getCode')
+            }}
+          </UButton>
+        </template>
+      </UInput>
       <p
-        v-if="verifyCodeFormatError || authProps.verifyCodeError"
+        v-if="codeError"
         class="text-left text-[.8rem] text-red-500 mt-1 mx-auto w-[72%] min-w-36 max-sm:w-62"
       >
-        {{ verifyCodeFormatError || authProps.verifyCodeError }}
+        {{ codeError }}
       </p>
     </div>
+
     <div v-if="loginType === 'account' || loginType === 'verify'">
       <UButton
         type="submit"
@@ -229,6 +353,8 @@ const onComponent = (value: string | undefined) => {
       </UButton>
     </div>
   </form>
+
+  <!-- Account recovery and registration links are only relevant to password login. -->
   <div
     v-if="loginType === 'account'"
     class="flex justify-between text-left text-sm mx-auto w-[72%] min-w-36 max-sm:w-62 mt-6"
@@ -248,5 +374,19 @@ const onComponent = (value: string | undefined) => {
         {{ $t('signUp') }}
       </span>
     </p>
+  </div>
+
+  <!-- Passkey authentication is delegated to the parent through the login event. -->
+  <div v-if="loginType === 'passkey'">
+    <UButton
+      type="button"
+      color="primary"
+      icon="flowbite:fingerprint-solid"
+      class="w-[72%] mt-6 h-9 min-w-36 max-sm:w-62 rounded-full text-[1rem] max-sm:text-sm line-flex items-center justify-center bg-blue-600 enabled:hover:bg-blue-700 disabled:hover:bg-blue-600 active:bg-blue-700 text-white"
+      :disabled="isLoginDisabled"
+      @click="onLogin"
+    >
+    <span class="mt-0.5">{{ $t('passkeyLogin') }}</span>
+    </UButton>
   </div>
 </template>

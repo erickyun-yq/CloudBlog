@@ -11,6 +11,14 @@ const clearAuthErrors = () => {
   loginError.value = ''
 }
 
+const handleRequestCode = (request: {
+  email: string
+  onSuccess: () => void
+  onError: (message: string) => void
+}) => {
+  request.onSuccess()
+}
+
 defineShortcuts({
   o: () => open.value = !open.value
 })
@@ -52,6 +60,7 @@ defineShortcuts({
         :verify-code-error="verifyCodeError"
         :login-error="loginError"
         @clear-errors="clearAuthErrors"
+        @request-code="handleRequestCode"
       />
     </template>
   </UModal>

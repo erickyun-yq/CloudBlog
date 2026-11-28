@@ -18,10 +18,14 @@
     "verifyCode": "Verification Code",
     "email": "Enter your email.",
     "invalidEmail": "Enter a valid email address.",
+    "getCode": "Get code",
+    "sendingCode": "Sending...",
+    "resendCodeCountdown": "Resend in {seconds}s",
     "code": "Enter your verification code.",
     "invalidVerifyCode": "Verification code must be exactly 6 digits.",
 
     "passKey": "PassKey",
+    "passkeyLogin": "Sign in with a passkey",
     
     "login": "Login in",
     "forgetPassword": "Forget Password",

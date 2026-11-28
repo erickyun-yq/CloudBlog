@@ -18,10 +18,14 @@
     "verifyCode": "验证码登录",
     "email": "请输入邮箱",
     "invalidEmail": "请输入有效的邮箱地址",
+    "getCode": "获取验证码",
+    "sendingCode": "发送中...",
+    "resendCodeCountdown": "{seconds} 秒后重新获取",
     "code": "请输入验证码",
     "invalidVerifyCode": "验证码必须为 6 位数字",
 
     "passKey": "PassKey登录",
+    "passkeyLogin": "使用通行密钥登录",
 
     "login": "登录",
     "forgetPassword": "忘记密码",
